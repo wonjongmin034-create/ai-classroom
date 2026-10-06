@@ -63,14 +63,14 @@
     $('grid').innerHTML = list.map(function(m){
       var th = themeOf(m.theme) || {name:'', color:'#1b2236'};
       return '<article class="card" style="--c:'+th.color+'">'+
-        '<a class="cover" href="'+esc(m.link)+'"><img loading="lazy" src="'+esc(m.cover)+'" alt="'+esc(m.title)+' 표지" /></a>'+
+        '<a class="cover" href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'><img loading="lazy" src="'+esc(m.cover)+'" alt="'+esc(m.title)+' 표지" /></a>'+
         '<div class="body"><span class="pill">'+esc(th.name)+'</span>'+
-        '<h3><a href="'+esc(m.link)+'">'+esc(m.title)+'</a></h3>'+
+        '<h3><a href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'>'+esc(m.title)+'</a></h3>'+
         (m.subtitle ? '<p class="sub">'+esc(m.subtitle)+'</p>' : '')+
         '<div class="tags">'+(m.tags||[]).map(function(x){ return '<span>#'+esc(x)+'</span>'; }).join('')+'</div>'+
         '<div class="meta">'+(m.pages ? m.pages+'장 · ' : '')+esc(m.author||'')+' · '+esc(m.date||'')+'</div>'+
-        '<div class="links"><a href="tools.html?m='+esc(m.id)+'">🧰 도구 '+((m.tools||[]).length)+'개</a><a href="prompts.html?m='+esc(m.id)+'">📋 프롬프트 '+(counts[m.id]||0)+'개</a></div>'+
-        '<div class="act"><a class="btn pri" href="'+esc(m.link)+'">슬라이드 보기</a>'+
+        ((m.tools||[]).length||counts[m.id] ? '<div class="links"><a href="tools.html?m='+esc(m.id)+'">🧰 도구 '+((m.tools||[]).length)+'개</a><a href="prompts.html?m='+esc(m.id)+'">📋 프롬프트 '+(counts[m.id]||0)+'개</a></div>' : '')+
+        '<div class="act"><a class="btn pri" href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'>'+(m.external?'열기 ↗':'슬라이드 보기')+'</a>'+
         (m.pdf ? '<a class="btn" href="'+esc(m.pdf)+'" download>PDF ↓</a>' : '')+'</div></div></article>';
     }).join('');
   }

@@ -86,6 +86,23 @@
           "slide": 99
         }
       ]
+    },
+    {
+      "id": "catch-mind",
+      "title": "캐치마인드",
+      "subtitle": "한 명이 그리고, 모둠 친구들이 맞혀요 — 실시간 그림 퀴즈",
+      "theme": "tools",
+      "tags": [
+        "그림 퀴즈",
+        "모둠 활동",
+        "실시간"
+      ],
+      "author": "원종민",
+      "date": "2026-10",
+      "cover": "materials/catch-mind/cover.jpg",
+      "link": "https://catch-mind-jh47.vercel.app",
+      "external": true,
+      "tools": []
     }
   ]
 }
