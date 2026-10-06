@@ -287,3 +287,4 @@ body.present .ui:hover{opacity:1}
   .frame,.slide{border-radius:0!important;box-shadow:none!important}
 }
 @media (max-width:640px){.ui a.dl,#mode{display:none}}
+.ui a.dl.home:hover{background:var(--ink)!important;color:#fff!important}

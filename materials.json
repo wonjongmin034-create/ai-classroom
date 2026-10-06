@@ -1,0 +1,23 @@
+{
+  "themes": [
+    { "id": "genai", "name": "생성형 AI",   "emoji": "✨", "desc": "그림·영상·글을 말로 만드는 AI 활용", "color": "#ff6b4a" },
+    { "id": "tools", "name": "수업 도구",   "emoji": "🧰", "desc": "퀴즈·PPT·게임 등 수업에 바로 쓰는 도구", "color": "#1151ff" },
+    { "id": "class", "name": "학급 운영",   "emoji": "🏫", "desc": "자리·모둠·알림 등 우리 반 운영", "color": "#007d48" },
+    { "id": "work",  "name": "업무 자동화", "emoji": "⚡", "desc": "공문·일정·문서 업무 줄이기", "color": "#8a3ffc" }
+  ],
+  "materials": [
+    {
+      "id": "vibe-coding",
+      "title": "말로 만드는 수업 자료",
+      "subtitle": "바이브 코딩으로 기르는 컴퓨팅 사고력",
+      "theme": "genai",
+      "tags": ["바이브 코딩", "제미나이", "노트북LM", "PPT", "챗봇 GEMS"],
+      "pages": 111,
+      "author": "원종민",
+      "date": "2026-10",
+      "cover": "materials/vibe-coding/cover.jpg",
+      "link": "materials/vibe-coding/index.html",
+      "pdf": "materials/vibe-coding/말로만드는수업자료_원종민.pdf"
+    }
+  ]
+}
