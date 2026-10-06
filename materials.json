@@ -103,6 +103,25 @@
       "link": "https://catch-mind-jh47.vercel.app",
       "external": true,
       "tools": []
+    },
+    {
+      "id": "dotori-village",
+      "title": "도토리 마을",
+      "subtitle": "학습 문제를 풀어 도토리를 모아 나만의 마을을 가꾸는 학급 운영 3D 웹게임",
+      "theme": "class",
+      "tags": [
+        "3D 게임",
+        "학급 운영",
+        "도토리",
+        "학습 문제",
+        "선생님 대시보드"
+      ],
+      "author": "원종민",
+      "date": "2026-10",
+      "cover": "materials/dotori-village/cover.jpg",
+      "link": "https://wonjongmin034-create.github.io/dotori-village/",
+      "external": true,
+      "tools": []
     }
   ]
 }
