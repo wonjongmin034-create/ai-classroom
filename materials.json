@@ -126,6 +126,25 @@
       "link": "https://wonjongmin034-create.github.io/dotori-village/",
       "external": true,
       "tools": []
+    },
+    {
+      "id": "inline-ai",
+      "title": "inline AI 업무 실습",
+      "subtitle": "내 업무 파일, AI에게 맡겨 보기 — 교원 연수 2시간 강의안",
+      "theme": "work",
+      "tags": [
+        "inline AI",
+        "업무 파일",
+        "교원 연수"
+      ],
+      "pages": 94,
+      "author": "권준구",
+      "date": "2026-10",
+      "cover": "materials/inline-ai/cover.jpg",
+      "link": "https://kwonjungu.github.io/inline-ai-setup/lecture.html#16",
+      "external": true,
+      "note": "원 강의안은 연수 번호를 입력해야 열려요. 제작: 권준구",
+      "tools": []
     }
   ]
 }

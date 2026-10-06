@@ -120,3 +120,5 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .card .links{display:flex;gap:14px;font-size:13px;font-weight:800;margin-top:4px}
 .card .links a{color:var(--mute);border-bottom:1.5px solid var(--hair)}
 .card .links a:hover{color:var(--c);border-color:var(--c)}
+
+.mnote{background:rgba(255,183,3,.16);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:600;line-height:1.5}

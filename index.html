@@ -67,6 +67,7 @@
         '<div class="body"><span class="pill">'+esc(th.name)+'</span>'+
         '<h3><a href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'>'+esc(m.title)+'</a></h3>'+
         (m.subtitle ? '<p class="sub">'+esc(m.subtitle)+'</p>' : '')+
+        (m.note ? '<p class="mnote">'+esc(m.note)+'</p>' : '')+
         '<div class="tags">'+(m.tags||[]).map(function(x){ return '<span>#'+esc(x)+'</span>'; }).join('')+'</div>'+
         '<div class="meta">'+(m.pages ? m.pages+'장 · ' : '')+esc(m.author||'')+' · '+esc(m.date||'')+'</div>'+
         ((m.tools||[]).length||counts[m.id] ? '<div class="links"><a href="tools.html?m='+esc(m.id)+'">🧰 도구 '+((m.tools||[]).length)+'개</a><a href="prompts.html?m='+esc(m.id)+'">📋 프롬프트 '+(counts[m.id]||0)+'개</a></div>' : '')+
