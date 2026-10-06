@@ -1,0 +1,113 @@
+{
+  "uses": ["대화·글", "그림·영상", "문서·발표", "게임·앱", "챗봇"],
+  "tools": [
+    {
+      "id": "gemini",
+      "name": "제미나이 (Gemini)",
+      "emoji": "💎",
+      "use": "대화·글",
+      "summary": "말로 요청하면 글·그림·보고서·웹앱까지 만들어 주는 구글 AI. 이 강의의 기본 도구예요.",
+      "when": ["수업 자료 초안 만들기", "나노 바나나로 그림 만들기", "캔버스로 보고서·웹앱 만들기"],
+      "level": "처음",
+      "url": "https://gemini.google.com",
+      "note": "꼭 @gmail.com 으로 끝나는 일반 구글 계정으로 접속하세요.",
+      "slide": 6
+    },
+    {
+      "id": "nano-banana",
+      "name": "나노 바나나 (제미나이 이미지)",
+      "emoji": "🍌",
+      "use": "그림·영상",
+      "summary": "문장 한 줄로 그림을 만들고, 올린 사진을 원하는 대로 바꿔 주는 제미나이의 이미지 기능.",
+      "when": ["삽화·배경·캐릭터 만들기", "아이 그림을 실사로 바꾸기", "색칠 도안·스티커·포스터"],
+      "level": "처음",
+      "url": "https://gemini.google.com",
+      "note": "같은 대화 안에서 계속 고치면 인물과 화풍이 이어져요.",
+      "slide": 15
+    },
+    {
+      "id": "notebooklm",
+      "name": "노트북LM (NotebookLM)",
+      "emoji": "📓",
+      "use": "문서·발표",
+      "summary": "내 자료(PDF·문서)를 올리면 그 자료만 근거로 설명 영상·인포그래픽·마인드맵·슬라이드를 만들어 줘요.",
+      "when": ["단원 설명 영상·인포그래픽", "공문·연수 자료를 한 장으로 정리", "슬라이드 자료 만들기"],
+      "level": "처음",
+      "url": "https://notebooklm.google.com",
+      "note": "올린 자료를 근거로 답하므로 내용이 덜 틀려요.",
+      "slide": 38
+    },
+    {
+      "id": "padlet-arcade",
+      "name": "패들렛 아케이드",
+      "emoji": "🕹️",
+      "use": "게임·앱",
+      "summary": "말로 설명하면 미니 게임을 만들어 주고, 링크·QR로 학생들과 바로 공유할 수 있어요.",
+      "when": ["복습 게임 만들기", "학생에게 링크·QR로 공유"],
+      "level": "처음",
+      "url": "https://arcade.padlet.com",
+      "note": "",
+      "slide": 54
+    },
+    {
+      "id": "padlet",
+      "name": "패들렛 (Padlet)",
+      "emoji": "📌",
+      "use": "문서·발표",
+      "summary": "게시판에 글·그림·링크를 모으는 도구. 연수 공동 자산을 모아 두는 용도로 쓰였어요.",
+      "when": ["공동 자료 모음", "학생 작품 전시"],
+      "level": "처음",
+      "url": "https://padlet.com",
+      "note": "",
+      "slide": 54
+    },
+    {
+      "id": "google-slides",
+      "name": "구글 슬라이드",
+      "emoji": "🖼️",
+      "use": "문서·발표",
+      "summary": "AI가 만든 슬라이드를 내보내 직접 고치고 발표하는 도구. PDF를 PPT로 바꾸는 흐름에도 써요.",
+      "when": ["AI 슬라이드 내보내기", "발표 자료 마무리 편집"],
+      "level": "익숙",
+      "url": "https://slides.google.com",
+      "note": "",
+      "slide": 65
+    },
+    {
+      "id": "canvas",
+      "name": "캔버스 (제미나이 안)",
+      "emoji": "🧩",
+      "use": "게임·앱",
+      "summary": "제미나이 대화 옆에서 보고서·웹페이지·게임을 실시간으로 만들고 고치는 작업 공간.",
+      "when": ["HTML 한 파일 웹앱 만들기", "보고서 실시간 작성", "자리 뽑기·타이머 같은 학급 도구"],
+      "level": "익숙",
+      "url": "https://gemini.google.com",
+      "note": "제미나이에서 [+ 도구] 메뉴로 켜요.",
+      "slide": 77
+    },
+    {
+      "id": "flow",
+      "name": "구글 플로우 (Flow)",
+      "emoji": "🎬",
+      "use": "그림·영상",
+      "summary": "구글의 AI 영상 제작 도구. 장면을 이어 짧은 영상을 만들어 봅니다.",
+      "when": ["수업 도입 영상", "이야기 영상 만들기"],
+      "level": "익숙",
+      "url": "https://labs.google/fx/tools/flow",
+      "note": "",
+      "slide": 94
+    },
+    {
+      "id": "gems",
+      "name": "GEMS (맞춤 챗봇)",
+      "emoji": "🤖",
+      "use": "챗봇",
+      "summary": "역할과 말투를 정해 두면 같은 설명을 매번 안 해도 되는 나만의 챗봇. 알림장·공문 정리에 좋아요.",
+      "when": ["알림장 정리봇", "공문 처리봇", "학교종이 멘트 도우미"],
+      "level": "익숙",
+      "url": "https://gemini.google.com/gems",
+      "note": "",
+      "slide": 99
+    }
+  ]
+}

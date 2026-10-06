@@ -747,6 +747,7 @@
   document.getElementById('cnt').textContent = '1 / ' + frames.length;
   /* #present 로 열면 곧바로 발표 모드 */
   if (location.hash === '#present') setPresent(true);
+  var gm = location.hash.match(/^#p(\d+)$/); if (gm) setTimeout(function(){ show(+gm[1] - 1); }, 50);
 })();
 </script>
 </body></html>

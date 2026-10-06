@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8" />
+<title>도구함 — AI 교실</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="강의에서 쓰는 AI 도구를 한곳에 모았어요" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="hub.css" />
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="./"><span class="logo">AI</span> 교실</a>
+    <nav class="nav"><a href="./">자료실</a><a class="on" href="tools.html">도구함</a><a href="prompts.html">프롬프트</a></nav>
+    <label class="search"><span aria-hidden="true">🔍</span>
+      <input id="q" type="search" placeholder="도구 검색" autocomplete="off" />
+    </label>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="phead">
+    <h1>🧰 도구함</h1>
+    <p>강의에서 쓰는 도구를 한곳에 모았어요. 언제 쓰는지 보고, 바로 열어 보세요.</p>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="tgrid" id="grid"></div>
+  <p class="empty" id="empty" hidden>조건에 맞는 도구가 없어요.</p>
+</main>
+<footer class="foot wrap">© 2026 원종민 · AI 교실</footer>
+
+<script>
+(function(){
+  var data, cur = '전체', q = '';
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function chips(){
+    $('chips').innerHTML = ['전체'].concat(data.uses).map(function(u){
+      return '<button class="chip'+(u===cur?' on':'')+'" data-u="'+esc(u)+'">'+esc(u)+'</button>';
+    }).join('');
+  }
+  function grid(){
+    var list = data.tools.filter(function(t){
+      if (cur !== '전체' && t.use !== cur) return false;
+      if (!q) return true;
+      return (t.name+' '+t.summary+' '+t.when.join(' ')).toLowerCase().indexOf(q) > -1;
+    });
+    $('empty').hidden = list.length > 0;
+    $('grid').innerHTML = list.map(function(t){
+      return '<article class="tool"><div class="th"><div class="ico">'+t.emoji+'</div><div><h3>'+esc(t.name)+'</h3>'+
+        '<div class="meta2"><span class="badge">'+esc(t.use)+'</span><span class="badge lv'+(t.level==='처음'?'':' x')+'">'+(t.level==='처음'?'처음 써도 OK':'익숙해지면')+'</span></div></div></div>'+
+        '<p class="sum">'+esc(t.summary)+'</p>'+
+        '<ul>'+t.when.map(function(w){ return '<li>'+esc(w)+'</li>'; }).join('')+'</ul>'+
+        (t.note ? '<div class="note">'+esc(t.note)+'</div>' : '')+
+        '<div class="act" style="display:flex;gap:8px"><a class="btn pri" href="'+esc(t.url)+'" target="_blank" rel="noopener">열기 ↗</a>'+
+        '<a class="btn" href="materials/vibe-coding/index.html#p'+t.slide+'">강의안 '+t.slide+'쪽</a></div></article>';
+    }).join('');
+  }
+  $('chips').addEventListener('click', function(e){ var b = e.target.closest('[data-u]'); if (b){ cur = b.dataset.u; chips(); grid(); } });
+  $('q').addEventListener('input', function(){ q = this.value.trim().toLowerCase(); grid(); });
+  fetch('tools.json').then(function(r){ return r.json(); }).then(function(d){ data = d; chips(); grid(); })
+    .catch(function(){ $('grid').innerHTML = '<p class="empty">목록을 불러오지 못했어요.</p>'; });
+})();
+</script>
+</body></html>

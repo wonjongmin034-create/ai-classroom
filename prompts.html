@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8" />
+<title>프롬프트 보관함 — AI 교실</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="수업·업무에 쓰는 프롬프트를 검색하고 복사하세요" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="hub.css" />
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="./"><span class="logo">AI</span> 교실</a>
+    <nav class="nav"><a href="./">자료실</a><a href="tools.html">도구함</a><a class="on" href="prompts.html">프롬프트</a></nav>
+    <label class="search"><span aria-hidden="true">🔍</span>
+      <input id="q" type="search" placeholder="프롬프트 검색" autocomplete="off" />
+    </label>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="phead">
+    <h1>📋 프롬프트 보관함</h1>
+    <p>강의안의 프롬프트를 모았어요. 검색해서 <b>복사</b>한 뒤 제미나이 등에 붙여넣으세요. <span id="count"></span></p>
+  </div>
+
+  <details class="addbox">
+    <summary>＋ 내 프롬프트 추가</summary>
+    <form id="addf">
+      <input id="aT" placeholder="제목 (예: 생존수영 안내 인포그래픽)" required maxlength="60" />
+      <input id="aC" placeholder="분류 (예: 내 프롬프트)" maxlength="20" />
+      <textarea id="aX" placeholder="프롬프트 내용" required></textarea>
+      <button class="btn pri" type="submit">저장</button>
+      <small>이 기기의 브라우저에만 저장돼요. 학생 실명 같은 개인정보는 넣지 마세요.</small>
+    </form>
+  </details>
+
+  <div class="chips" id="chips"></div>
+  <div class="plist" id="list"></div>
+  <p class="empty" id="empty" hidden>조건에 맞는 프롬프트가 없어요.</p>
+</main>
+<footer class="foot wrap">© 2026 원종민 · AI 교실</footer>
+
+<script>
+(function(){
+  var KEY = 'myPrompts', base = [], mine = [], cur = '전체', q = '';
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function loadMine(){ try { mine = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { mine = []; } }
+  function saveMine(){ try { localStorage.setItem(KEY, JSON.stringify(mine)); } catch (e) {} }
+  function all(){ return mine.concat(base); }
+  function cats(){
+    var seen = [], a = all();
+    a.forEach(function(p){ if (seen.indexOf(p.category) < 0) seen.push(p.category); });
+    return ['전체'].concat(seen);
+  }
+  function chips(){
+    $('chips').innerHTML = cats().map(function(c){
+      return '<button class="chip'+(c===cur?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+'</button>';
+    }).join('');
+  }
+  function list(){
+    var items = all().filter(function(p){
+      if (cur !== '전체' && p.category !== cur) return false;
+      if (!q) return true;
+      return (p.title+' '+p.category+' '+(p.group||'')+' '+p.text).toLowerCase().indexOf(q) > -1;
+    });
+    $('count').textContent = '(' + items.length + '개)';
+    $('empty').hidden = items.length > 0;
+    var html = '', last = null;
+    items.forEach(function(p){
+      var g = p.category + (p.group ? ' · ' + p.group : '');
+      if (g !== last){ html += '<div class="pgroup">'+esc(g)+'</div>'; last = g; }
+      html += '<article class="pr" data-id="'+esc(p.id)+'"><div class="ph"><h3>'+esc(p.title)+'</h3><span class="cat">'+esc(p.category)+'</span></div>'+
+        '<div class="txt">'+esc(p.text)+'</div><div class="pa">'+
+        '<button class="btn pri copy">복사</button><button class="btn more">전체 보기</button>'+
+        (p.slide && p.source ? '<a class="btn" href="materials/'+esc(p.source)+'/index.html#p'+p.slide+'">강의안에서 보기</a>' : '')+
+        (p.mine ? '<button class="btn del">삭제</button>' : '')+'</div></article>';
+    });
+    $('list').innerHTML = html;
+  }
+  function find(id){ return all().filter(function(p){ return p.id === id; })[0]; }
+
+  $('list').addEventListener('click', function(e){
+    var art = e.target.closest('.pr'); if (!art) return;
+    var p = find(art.dataset.id); if (!p) return;
+    if (e.target.classList.contains('more')){ art.classList.toggle('open'); e.target.textContent = art.classList.contains('open') ? '접기' : '전체 보기'; }
+    else if (e.target.classList.contains('copy')){
+      var b = e.target, ok = function(){ b.textContent = '복사됨 ✓'; b.classList.add('done'); setTimeout(function(){ b.textContent = '복사'; b.classList.remove('done'); }, 1600); };
+      if (navigator.clipboard) navigator.clipboard.writeText(p.text).then(ok, ok);
+      else { var ta = document.createElement('textarea'); ta.value = p.text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (x) {} document.body.removeChild(ta); ok(); }
+    } else if (e.target.classList.contains('del')){
+      if (confirm('이 프롬프트를 삭제할까요?')){ mine = mine.filter(function(m){ return m.id !== p.id; }); saveMine(); chips(); list(); }
+    }
+  });
+  $('chips').addEventListener('click', function(e){ var b = e.target.closest('[data-c]'); if (b){ cur = b.dataset.c; chips(); list(); } });
+  $('q').addEventListener('input', function(){ q = this.value.trim().toLowerCase(); list(); });
+  $('addf').addEventListener('submit', function(e){
+    e.preventDefault();
+    mine.unshift({id:'m'+Date.now(), title:$('aT').value.trim(), category:$('aC').value.trim() || '내 프롬프트', group:'', text:$('aX').value.trim(), mine:true});
+    saveMine(); this.reset(); chips(); list();
+  });
+
+  loadMine();
+  fetch('prompts.json').then(function(r){ return r.json(); }).then(function(d){ base = d; chips(); list(); })
+    .catch(function(){ $('list').innerHTML = '<p class="empty">목록을 불러오지 못했어요.</p>'; });
+})();
+</script>
+</body></html>
