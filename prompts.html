@@ -34,7 +34,8 @@
     </form>
   </details>
 
-  <div class="chips" id="chips"></div>
+  <div class="chips" id="mchips" aria-label="강의안별"></div>
+  <div class="chips" id="chips" aria-label="분류별"></div>
   <div class="plist" id="list"></div>
   <p class="empty" id="empty" hidden>조건에 맞는 프롬프트가 없어요.</p>
 </main>
@@ -42,24 +43,31 @@
 
 <script>
 (function(){
-  var KEY = 'myPrompts', base = [], mine = [], cur = '전체', q = '';
+  var KEY = 'myPrompts', base = [], mine = [], M = {materials:[]}, mat = 'all', cur = '전체', q = '';
   var $ = function(id){ return document.getElementById(id); };
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function loadMine(){ try { mine = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { mine = []; } }
   function saveMine(){ try { localStorage.setItem(KEY, JSON.stringify(mine)); } catch (e) {} }
   function all(){ return mine.concat(base); }
+  function matOf(id){ return M.materials.filter(function(m){ return m.id === id; })[0]; }
+  function inMat(p){ return mat === 'all' || p.source === mat; }
   function cats(){
     var seen = [], a = all();
-    a.forEach(function(p){ if (seen.indexOf(p.category) < 0) seen.push(p.category); });
+    a.filter(inMat).forEach(function(p){ if (seen.indexOf(p.category) < 0) seen.push(p.category); });
     return ['전체'].concat(seen);
   }
   function chips(){
-    $('chips').innerHTML = cats().map(function(c){
+    var withP = M.materials.filter(function(m){ return base.some(function(p){ return p.source === m.id; }); });
+    $('mchips').innerHTML = '<span class="chiplab">강의안</span>' + [{id:'all', title:'전체'}].concat(withP).map(function(m){
+      return '<button class="chip'+(m.id===mat?' on':'')+'" data-m="'+esc(m.id)+'">'+esc(m.title)+'</button>';
+    }).join('');
+    $('chips').innerHTML = '<span class="chiplab">분류</span>' + cats().map(function(c){
       return '<button class="chip'+(c===cur?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+'</button>';
     }).join('');
   }
   function list(){
     var items = all().filter(function(p){
+      if (!inMat(p)) return false;
       if (cur !== '전체' && p.category !== cur) return false;
       if (!q) return true;
       return (p.title+' '+p.category+' '+(p.group||'')+' '+p.text).toLowerCase().indexOf(q) > -1;
@@ -73,7 +81,7 @@
       html += '<article class="pr" data-id="'+esc(p.id)+'"><div class="ph"><h3>'+esc(p.title)+'</h3><span class="cat">'+esc(p.category)+'</span></div>'+
         '<div class="txt">'+esc(p.text)+'</div><div class="pa">'+
         '<button class="btn pri copy">복사</button><button class="btn more">전체 보기</button>'+
-        (p.slide && p.source ? '<a class="btn" href="materials/'+esc(p.source)+'/index.html#p'+p.slide+'">강의안에서 보기</a>' : '')+
+        (p.slide && p.source && matOf(p.source) ? '<a class="btn" href="materials/'+esc(p.source)+'/index.html#p'+p.slide+'">'+esc(matOf(p.source).title)+' · '+p.slide+'쪽</a>' : '')+
         (p.mine ? '<button class="btn del">삭제</button>' : '')+'</div></article>';
     });
     $('list').innerHTML = html;
@@ -93,6 +101,7 @@
     }
   });
   $('chips').addEventListener('click', function(e){ var b = e.target.closest('[data-c]'); if (b){ cur = b.dataset.c; chips(); list(); } });
+  $('mchips').addEventListener('click', function(e){ var b = e.target.closest('[data-m]'); if (b){ mat = b.dataset.m; cur = '전체'; chips(); list(); } });
   $('q').addEventListener('input', function(){ q = this.value.trim().toLowerCase(); list(); });
   $('addf').addEventListener('submit', function(e){
     e.preventDefault();
@@ -101,7 +110,13 @@
   });
 
   loadMine();
-  fetch('prompts.json').then(function(r){ return r.json(); }).then(function(d){ base = d; chips(); list(); })
+  Promise.all([fetch('prompts.json').then(function(r){ return r.json(); }), fetch('materials.json').then(function(r){ return r.json(); })])
+    .then(function(a){
+      base = a[0]; M = a[1];
+      var m = new URLSearchParams(location.search).get('m');
+      if (m && matOf(m)) mat = m;
+      chips(); list();
+    })
     .catch(function(){ $('list').innerHTML = '<p class="empty">목록을 불러오지 못했어요.</p>'; });
 })();
 </script>

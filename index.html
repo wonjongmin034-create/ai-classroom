@@ -36,7 +36,7 @@
 
 <script>
 (function(){
-  var data, cur = 'all', q = '';
+  var data, counts = {}, cur = 'all', q = '';
   var $ = function(id){ return document.getElementById(id); };
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function themeOf(id){ return data.themes.filter(function(t){ return t.id === id; })[0]; }
@@ -69,6 +69,7 @@
         (m.subtitle ? '<p class="sub">'+esc(m.subtitle)+'</p>' : '')+
         '<div class="tags">'+(m.tags||[]).map(function(x){ return '<span>#'+esc(x)+'</span>'; }).join('')+'</div>'+
         '<div class="meta">'+(m.pages ? m.pages+'장 · ' : '')+esc(m.author||'')+' · '+esc(m.date||'')+'</div>'+
+        '<div class="links"><a href="tools.html?m='+esc(m.id)+'">🧰 도구 '+((m.tools||[]).length)+'개</a><a href="prompts.html?m='+esc(m.id)+'">📋 프롬프트 '+(counts[m.id]||0)+'개</a></div>'+
         '<div class="act"><a class="btn pri" href="'+esc(m.link)+'">슬라이드 보기</a>'+
         (m.pdf ? '<a class="btn" href="'+esc(m.pdf)+'" download>PDF ↓</a>' : '')+'</div></div></article>';
     }).join('');
@@ -85,8 +86,9 @@
   });
   $('q').addEventListener('input', function(){ q = this.value.trim().toLowerCase(); renderGrid(); });
 
-  fetch('materials.json').then(function(r){ return r.json(); }).then(function(d){
-    data = d;
+  Promise.all([fetch('materials.json').then(function(r){ return r.json(); }), fetch('prompts.json').then(function(r){ return r.json(); }).catch(function(){ return []; })]).then(function(a){
+    data = a[0];
+    a[1].forEach(function(p){ counts[p.source] = (counts[p.source] || 0) + 1; });
     var h = location.hash.slice(1);
     if (h && themeOf(h)) cur = h;
     renderThemes(); renderGrid();

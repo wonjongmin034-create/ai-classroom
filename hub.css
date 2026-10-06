@@ -110,3 +110,13 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .addbox input,.addbox textarea{font:inherit;font-size:15px;border:1.5px solid var(--hair);border-radius:14px;padding:11px 14px;width:100%;background:#fffdf8;color:var(--ink)}
 .addbox textarea{min-height:120px;resize:vertical;line-height:1.6}
 .addbox small{color:var(--mute)}
+
+/* 강의안 연결 */
+.chiplab{align-self:center;font-size:12px;font-weight:900;color:var(--mute);letter-spacing:.06em;margin-right:2px}
+#mchips{margin-bottom:8px}
+.used{border-top:1px dashed var(--hair);padding-top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.used span{font-size:12px;font-weight:900;color:var(--mute);margin-right:4px}
+.used .btn{padding:6px 12px;font-size:12px}
+.card .links{display:flex;gap:14px;font-size:13px;font-weight:800;margin-top:4px}
+.card .links a{color:var(--mute);border-bottom:1.5px solid var(--hair)}
+.card .links a:hover{color:var(--c);border-color:var(--c)}

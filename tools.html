@@ -20,9 +20,10 @@
 <main class="wrap">
   <div class="phead">
     <h1>🧰 도구함</h1>
-    <p>강의에서 쓰는 도구를 한곳에 모았어요. 언제 쓰는지 보고, 바로 열어 보세요.</p>
+    <p>강의에서 쓰는 도구를 한곳에 모았어요. 도구마다 <b>어느 강의안 몇 쪽</b>에서 나오는지 연결돼 있어요. <span id="count"></span></p>
   </div>
-  <div class="chips" id="chips"></div>
+  <div class="chips" id="mchips" aria-label="강의안별"></div>
+  <div class="chips" id="chips" aria-label="용도별"></div>
   <div class="tgrid" id="grid"></div>
   <p class="empty" id="empty" hidden>조건에 맞는 도구가 없어요.</p>
 </main>
@@ -30,35 +31,57 @@
 
 <script>
 (function(){
-  var data, cur = '전체', q = '';
+  var T, M, cur = '전체', mat = 'all', q = '';
   var $ = function(id){ return document.getElementById(id); };
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-
+  function usedIn(toolId){
+    var out = [];
+    M.materials.forEach(function(m){ (m.tools || []).forEach(function(u){ if (u.id === toolId) out.push({m: m, slide: u.slide}); }); });
+    return out;
+  }
   function chips(){
-    $('chips').innerHTML = ['전체'].concat(data.uses).map(function(u){
+    $('mchips').innerHTML = '<span class="chiplab">강의안</span>' +
+      [{id:'all', title:'전체'}].concat(M.materials).map(function(m){
+        return '<button class="chip'+(m.id===mat?' on':'')+'" data-m="'+esc(m.id)+'">'+esc(m.title)+'</button>';
+      }).join('');
+    $('chips').innerHTML = '<span class="chiplab">용도</span>' + ['전체'].concat(T.uses).map(function(u){
       return '<button class="chip'+(u===cur?' on':'')+'" data-u="'+esc(u)+'">'+esc(u)+'</button>';
     }).join('');
   }
   function grid(){
-    var list = data.tools.filter(function(t){
+    var list = T.tools.filter(function(t){
+      var used = usedIn(t.id);
+      if (mat !== 'all' && !used.some(function(u){ return u.m.id === mat; })) return false;
       if (cur !== '전체' && t.use !== cur) return false;
       if (!q) return true;
       return (t.name+' '+t.summary+' '+t.when.join(' ')).toLowerCase().indexOf(q) > -1;
     });
+    $('count').textContent = '(' + list.length + '개)';
     $('empty').hidden = list.length > 0;
     $('grid').innerHTML = list.map(function(t){
-      return '<article class="tool"><div class="th"><div class="ico">'+t.emoji+'</div><div><h3>'+esc(t.name)+'</h3>'+
+      var used = usedIn(t.id).filter(function(u){ return mat === 'all' || u.m.id === mat; });
+      var links = used.map(function(u){
+        return '<a class="btn" href="materials/'+esc(u.m.id)+'/index.html#p'+u.slide+'" title="'+esc(u.m.title)+'">'+esc(u.m.title)+' · '+u.slide+'쪽</a>';
+      }).join('');
+      return '<article class="tool" id="'+esc(t.id)+'"><div class="th"><div class="ico">'+t.emoji+'</div><div><h3>'+esc(t.name)+'</h3>'+
         '<div class="meta2"><span class="badge">'+esc(t.use)+'</span><span class="badge lv'+(t.level==='처음'?'':' x')+'">'+(t.level==='처음'?'처음 써도 OK':'익숙해지면')+'</span></div></div></div>'+
         '<p class="sum">'+esc(t.summary)+'</p>'+
         '<ul>'+t.when.map(function(w){ return '<li>'+esc(w)+'</li>'; }).join('')+'</ul>'+
         (t.note ? '<div class="note">'+esc(t.note)+'</div>' : '')+
-        '<div class="act" style="display:flex;gap:8px"><a class="btn pri" href="'+esc(t.url)+'" target="_blank" rel="noopener">열기 ↗</a>'+
-        '<a class="btn" href="materials/vibe-coding/index.html#p'+t.slide+'">강의안 '+t.slide+'쪽</a></div></article>';
+        '<div class="act"><a class="btn pri" href="'+esc(t.url)+'" target="_blank" rel="noopener">열기 ↗</a></div>'+
+        (links ? '<div class="used"><span>나온 강의안</span>'+links+'</div>' : '')+'</article>';
     }).join('');
   }
   $('chips').addEventListener('click', function(e){ var b = e.target.closest('[data-u]'); if (b){ cur = b.dataset.u; chips(); grid(); } });
+  $('mchips').addEventListener('click', function(e){ var b = e.target.closest('[data-m]'); if (b){ mat = b.dataset.m; chips(); grid(); } });
   $('q').addEventListener('input', function(){ q = this.value.trim().toLowerCase(); grid(); });
-  fetch('tools.json').then(function(r){ return r.json(); }).then(function(d){ data = d; chips(); grid(); })
+  Promise.all([fetch('tools.json').then(function(r){ return r.json(); }), fetch('materials.json').then(function(r){ return r.json(); })])
+    .then(function(a){
+      T = a[0]; M = a[1];
+      var m = new URLSearchParams(location.search).get('m');
+      if (m && M.materials.some(function(x){ return x.id === m; })) mat = m;
+      chips(); grid();
+    })
     .catch(function(){ $('grid').innerHTML = '<p class="empty">목록을 불러오지 못했어요.</p>'; });
 })();
 </script>
