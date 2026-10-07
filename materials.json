@@ -129,21 +129,22 @@
     },
     {
       "id": "inline-ai",
-      "title": "inline AI 업무 실습",
-      "subtitle": "내 업무 파일, AI에게 맡겨 보기 — 교원 연수 2시간 강의안",
+      "title": "내 첫 에이전트 AI",
+      "subtitle": "내 업무 파일, AI에게 맡겨 보기 — 가정통신문·기안문·보고서·PPT·퀴즈까지 학교 현장 에이전트 AI 실습",
       "theme": "work",
       "tags": [
-        "inline AI",
-        "업무 파일",
-        "교원 연수"
+        "에이전트 AI",
+        "가정통신문",
+        "기안문",
+        "보고서",
+        "실습 자료"
       ],
-      "pages": 94,
       "author": "권준구",
       "date": "2026-10",
       "cover": "materials/inline-ai/cover.jpg",
-      "link": "https://kwonjungu.github.io/inline-ai-setup/lecture.html#16",
+      "link": "https://kwonjungu.github.io/myfirstaigent/index.html",
       "external": true,
-      "note": "원 강의안은 연수 번호를 입력해야 열려요. 제작: 권준구",
+      "note": "제작: 권준구 · 안내 사이트와 실습 자료(zip) 제공, 강의안 메뉴는 연수 번호가 필요해요",
       "tools": []
     }
   ]
