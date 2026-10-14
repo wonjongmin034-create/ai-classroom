@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8" />
+<title>관리 — AI 교실</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="hub.css" />
+<style>
+.panel{background:#fff;border:1px solid var(--hair);border-radius:26px;padding:22px 24px;box-shadow:0 8px 26px rgba(27,34,54,.07);margin-bottom:22px}
+.panel h2{font-size:20px;font-weight:900;letter-spacing:-.03em;margin-bottom:6px}
+.panel p.hint{color:var(--mute);font-size:14px;line-height:1.6;margin-bottom:12px}
+.form{display:grid;gap:12px;margin-top:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.row2{grid-template-columns:1fr}}
+label.f{display:grid;gap:5px;font-size:13px;font-weight:800;color:var(--mute)}
+label.f input,label.f select,label.f textarea{font:inherit;font-size:15px;font-weight:500;color:var(--ink);border:1.5px solid var(--hair);border-radius:14px;padding:10px 13px;background:#fffdf8;width:100%}
+label.f textarea{min-height:110px;resize:vertical;line-height:1.6}
+.req::after{content:" *";color:var(--brand)}
+.steps{counter-reset:s;display:grid;gap:8px;margin:10px 0 14px;padding:0;list-style:none}
+.steps li{counter-increment:s;position:relative;padding-left:34px;font-size:14px;line-height:1.6}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center}
+.steps code{background:var(--paper);border-radius:6px;padding:1px 6px;font-size:13px}
+.tabs{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.items{display:grid;gap:8px;margin-top:14px}
+.item{display:flex;align-items:center;gap:10px;border:1px solid var(--hair2);border-radius:16px;padding:10px 14px;background:#fffdf8}
+.item b{font-weight:800;font-size:15px}
+.item span{color:var(--mute);font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .btn{padding:6px 12px;font-size:12px;color:#d30005}
+.msg{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:12px 20px;font-weight:700;font-size:14px;box-shadow:0 12px 30px rgba(27,34,54,.3);z-index:50;max-width:92vw}
+.msg.err{background:#d30005}
+.usedrows{display:grid;gap:6px}
+.usedrow{display:flex;align-items:center;gap:8px;font-size:14px}
+.usedrow input[type=number]{width:80px;border:1.5px solid var(--hair);border-radius:10px;padding:5px 8px;font:inherit}
+.who{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.preview{max-width:240px;border-radius:12px;border:1px solid var(--hair);margin-top:6px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="./"><span class="logo">AI</span> 교실</a>
+    <nav class="nav"><a href="./">자료실</a><a href="tools.html">도구함</a><a href="prompts.html">프롬프트</a><a class="on" href="admin.html">관리</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="phead">
+    <h1>⚙️ 관리</h1>
+    <p>자료·도구·프롬프트를 여기서 직접 추가하고 지울 수 있어요. 저장하면 1~2분 뒤 사이트에 반영돼요.</p>
+  </div>
+
+  <!-- 로그인(토큰) -->
+  <section class="panel" id="loginPanel">
+    <h2>1. 연결하기</h2>
+    <p class="hint">저장하려면 GitHub 접근 토큰이 필요해요. 토큰은 <b>이 브라우저에만</b> 저장되고, 다른 곳으로 보내지 않아요. 공용 PC에서는 쓰지 마세요.</p>
+    <details>
+      <summary style="cursor:pointer;font-weight:800">토큰 만드는 방법 (처음 한 번만)</summary>
+      <ol class="steps">
+        <li>GitHub에 로그인한 뒤 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="text-decoration:underline">토큰 만들기 화면 ↗</a>을 엽니다.</li>
+        <li><b>Token name</b>은 <code>ai-classroom 관리</code>, <b>Expiration</b>은 90일 또는 1년을 고릅니다.</li>
+        <li><b>Repository access</b>에서 <code>Only select repositories</code>를 고르고 <code>ai-classroom</code> 하나만 선택합니다.</li>
+        <li><b>Permissions → Repository permissions</b>에서 <code>Contents</code>를 <code>Read and write</code>로 바꿉니다.</li>
+        <li>맨 아래 <b>Generate token</b>을 누르고, 나온 <code>github_pat_...</code> 문자열을 복사해 아래에 붙여넣습니다.</li>
+      </ol>
+    </details>
+    <div class="form">
+      <label class="f">접근 토큰<input id="token" type="password" placeholder="github_pat_..." autocomplete="off" /></label>
+      <div class="who"><button class="btn pri" id="connect" type="button">연결</button><button class="btn" id="disconnect" type="button" hidden>연결 끊기</button><span id="who" class="hint" style="margin:0"></span></div>
+    </div>
+  </section>
+
+  <div id="app" hidden>
+    <div class="tabs" id="tabs">
+      <button class="chip on" data-tab="m">자료</button>
+      <button class="chip" data-tab="t">도구</button>
+      <button class="chip" data-tab="p">프롬프트</button>
+    </div>
+
+    <!-- 자료 -->
+    <section data-pane="m">
+      <div class="panel">
+        <h2>자료 추가</h2>
+        <p class="hint">앱이나 강의안 사이트의 링크를 등록해요. 표지 이미지는 직접 올리면 되고, 안 올리면 색 표지가 자동으로 만들어져요.</p>
+        <form class="form" id="fm">
+          <div class="row2">
+            <label class="f"><span class="req">제목</span><input id="mTitle" required maxlength="60" placeholder="예: 캐치마인드" /></label>
+            <label class="f"><span class="req">링크</span><input id="mLink" required type="url" placeholder="https://..." /></label>
+          </div>
+          <label class="f">한 줄 설명<input id="mSub" maxlength="120" placeholder="예: 한 명이 그리고 모둠이 맞히는 그림 퀴즈" /></label>
+          <div class="row2">
+            <label class="f"><span class="req">테마</span><select id="mTheme"></select></label>
+            <label class="f">태그 (쉼표로 구분)<input id="mTags" placeholder="그림 퀴즈, 모둠 활동" /></label>
+          </div>
+          <div class="row2">
+            <label class="f">만든 사람<input id="mAuthor" value="원종민" maxlength="20" /></label>
+            <label class="f">안내 문구 (선택)<input id="mNote" maxlength="100" placeholder="예: 로그인이 필요해요" /></label>
+          </div>
+          <label class="f">표지 이미지 (선택, 가로형 권장)<input id="mCover" type="file" accept="image/*" /></label>
+          <img id="mPrev" class="preview" alt="" hidden />
+          <div><button class="btn pri" type="submit">자료 추가</button></div>
+        </form>
+      </div>
+      <div class="panel"><h2>등록된 자료</h2><div class="items" id="mList"></div></div>
+    </section>
+
+    <!-- 도구 -->
+    <section data-pane="t" hidden>
+      <div class="panel">
+        <h2>도구 추가</h2>
+        <p class="hint">도구함에 들어갈 도구예요. 어느 강의안 몇 쪽에서 나오는지 연결하면 카드에 링크가 생겨요.</p>
+        <form class="form" id="ft">
+          <div class="row2">
+            <label class="f"><span class="req">이름</span><input id="tName" required maxlength="40" placeholder="예: 노트북LM" /></label>
+            <label class="f">이모지<input id="tEmoji" maxlength="4" value="🔧" /></label>
+          </div>
+          <label class="f"><span class="req">한 줄 설명</span><input id="tSum" required maxlength="160" /></label>
+          <label class="f">언제 쓰나 (한 줄에 하나)<textarea id="tWhen" placeholder="수업 자료 만들기&#10;학생 활동 만들기"></textarea></label>
+          <div class="row2">
+            <label class="f">용도<select id="tUse"></select></label>
+            <label class="f">난이도<select id="tLevel"><option value="처음">처음 써도 OK</option><option value="익숙">익숙해지면</option></select></label>
+          </div>
+          <label class="f"><span class="req">열기 링크</span><input id="tUrl" required type="url" placeholder="https://..." /></label>
+          <label class="f">주의사항 (선택)<input id="tNote" maxlength="120" /></label>
+          <div class="f"><span style="font-size:13px;font-weight:800;color:var(--mute)">나온 강의안 연결 (선택)</span><div class="usedrows" id="tUsed"></div></div>
+          <div><button class="btn pri" type="submit">도구 추가</button></div>
+        </form>
+      </div>
+      <div class="panel"><h2>등록된 도구</h2><div class="items" id="tList"></div></div>
+    </section>
+
+    <!-- 프롬프트 -->
+    <section data-pane="p" hidden>
+      <div class="panel">
+        <h2>프롬프트 추가</h2>
+        <form class="form" id="fp">
+          <label class="f"><span class="req">제목</span><input id="pTitle" required maxlength="60" /></label>
+          <div class="row2">
+            <label class="f"><span class="req">분류</span><input id="pCat" required list="catlist" maxlength="20" placeholder="예: 그림·이미지" /><datalist id="catlist"></datalist></label>
+            <label class="f">소분류 (선택)<input id="pGroup" maxlength="20" /></label>
+          </div>
+          <label class="f"><span class="req">프롬프트 내용</span><textarea id="pText" required></textarea></label>
+          <div class="row2">
+            <label class="f">나온 강의안 (선택)<select id="pSource"></select></label>
+            <label class="f">쪽수 (선택)<input id="pSlide" type="number" min="1" /></label>
+          </div>
+          <small style="color:var(--mute)">학생 실명 같은 개인정보는 넣지 마세요. 사이트는 누구나 볼 수 있어요.</small>
+          <div><button class="btn pri" type="submit">프롬프트 추가</button></div>
+        </form>
+      </div>
+      <div class="panel"><h2>등록된 프롬프트</h2><div class="items" id="pList"></div></div>
+    </section>
+  </div>
+</main>
+<footer class="foot wrap">© 2026 원종민 · AI 교실</footer>
+
+<script>
+(function(){
+  var REPO = 'wonjongmin034-create/ai-classroom', BR = 'main', KEY = 'aiclass.ghtoken';
+  var $ = function(id){ return document.getElementById(id); };
+  var token = '', M = null, T = null, P = null;
+
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function toast(t, err){
+    var d = document.createElement('div'); d.className = 'msg' + (err ? ' err' : ''); d.textContent = t;
+    document.body.appendChild(d); setTimeout(function(){ d.remove(); }, err ? 6000 : 3500);
+  }
+  function b64enc(str){ var bytes = new TextEncoder().encode(str), s = ''; bytes.forEach(function(b){ s += String.fromCharCode(b); }); return btoa(s); }
+  function b64dec(b){ var s = atob(b.replace(/\n/g, '')), a = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return new TextDecoder().decode(a); }
+  function slug(s){
+    var a = String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return a || ('m' + Date.now().toString(36));
+  }
+
+  /* ---------- GitHub API ---------- */
+  function hdr(){ return {'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28'}; }
+  function url(path){ return 'https://api.github.com/repos/' + REPO + '/contents/' + path.split('/').map(encodeURIComponent).join('/'); }
+  function ghGet(path){
+    return fetch(url(path) + '?ref=' + BR + '&t=' + Date.now(), {headers: hdr(), cache: 'no-store'}).then(function(r){
+      if (!r.ok) throw new Error(path + ' 읽기 실패 (' + r.status + ')');
+      return r.json();
+    }).then(function(j){ return {sha: j.sha, text: b64dec(j.content)}; });
+  }
+  function ghPut(path, b64, msg, sha){
+    var body = {message: msg, content: b64, branch: BR}; if (sha) body.sha = sha;
+    return fetch(url(path), {method: 'PUT', headers: hdr(), body: JSON.stringify(body)}).then(function(r){
+      if (r.ok) return r.json();
+      return r.json().catch(function(){ return {}; }).then(function(j){
+        throw new Error(r.status === 401 || r.status === 403 ? '토큰 권한을 확인해 주세요 (Contents: Read and write)' : (j.message || '저장 실패 ' + r.status));
+      });
+    });
+  }
+  /* 파일을 새로 읽어 수정 후 저장 — 오래된 화면 때문에 덮어쓰는 일을 막는다 */
+  function mutate(path, fn, msg){
+    return ghGet(path).then(function(f){
+      var data = JSON.parse(f.text); fn(data);
+      return ghPut(path, b64enc(JSON.stringify(data, null, 2) + '\n'), msg, f.sha).then(function(){ return data; });
+    });
+  }
+  function loadAll(){
+    return Promise.all([ghGet('materials.json'), ghGet('tools.json'), ghGet('prompts.json')]).then(function(a){
+      M = JSON.parse(a[0].text); T = JSON.parse(a[1].text); P = JSON.parse(a[2].text);
+    });
+  }
+
+  /* ---------- 연결 ---------- */
+  function connect(tk){
+    token = tk.trim();
+    if (!token) return toast('토큰을 붙여넣어 주세요', true);
+    $('who').textContent = '확인 중…';
+    fetch('https://api.github.com/repos/' + REPO, {headers: hdr()}).then(function(r){
+      if (!r.ok) throw new Error('토큰을 확인해 주세요 (' + r.status + ')');
+      return r.json();
+    }).then(function(j){
+      if (!j.permissions || !j.permissions.push) throw new Error('이 토큰으로는 저장할 수 없어요. Contents 권한을 Read and write로 해 주세요.');
+      return loadAll();
+    }).then(function(){
+      try { localStorage.setItem(KEY, token); } catch (e) {}
+      $('token').value = ''; $('token').hidden = true; $('connect').hidden = true; $('disconnect').hidden = false;
+      $('who').textContent = '✓ 연결됨 (' + REPO + ')';
+      $('app').hidden = false; fill(); render();
+    }).catch(function(e){ token = ''; $('who').textContent = ''; toast(e.message, true); });
+  }
+  $('connect').onclick = function(){ connect($('token').value); };
+  $('token').addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); connect($('token').value); } });
+  $('disconnect').onclick = function(){
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    token = ''; $('app').hidden = true; $('token').hidden = false; $('connect').hidden = false; $('disconnect').hidden = true; $('who').textContent = '';
+  };
+
+  /* ---------- 화면 ---------- */
+  var tab = 'm';
+  $('tabs').addEventListener('click', function(e){
+    var b = e.target.closest('[data-tab]'); if (!b) return; tab = b.dataset.tab;
+    [].forEach.call($('tabs').children, function(c){ c.classList.toggle('on', c === b); });
+    [].forEach.call(document.querySelectorAll('[data-pane]'), function(s){ s.hidden = s.dataset.pane !== tab; });
+  });
+
+  function opts(arr, val, label){ return arr.map(function(x){ return '<option value="'+esc(val(x))+'">'+esc(label(x))+'</option>'; }).join(''); }
+  function fill(){
+    $('mTheme').innerHTML = opts(M.themes, function(t){ return t.id; }, function(t){ return t.emoji + ' ' + t.name; });
+    $('tUse').innerHTML = opts(T.uses, function(u){ return u; }, function(u){ return u; });
+    $('pSource').innerHTML = '<option value="">(없음)</option>' + opts(M.materials, function(m){ return m.id; }, function(m){ return m.title; });
+    $('tUsed').innerHTML = M.materials.map(function(m){
+      return '<label class="usedrow"><input type="checkbox" data-mid="'+esc(m.id)+'"> '+esc(m.title)+' <input type="number" min="1" placeholder="쪽" data-slide="'+esc(m.id)+'"></label>';
+    }).join('');
+    var cats = []; P.forEach(function(p){ if (cats.indexOf(p.category) < 0) cats.push(p.category); });
+    $('catlist').innerHTML = cats.map(function(c){ return '<option value="'+esc(c)+'">'; }).join('');
+  }
+  function themeName(id){ var t = M.themes.filter(function(x){ return x.id === id; })[0]; return t ? t.emoji + ' ' + t.name : id; }
+  function render(){
+    $('mList').innerHTML = M.materials.map(function(m){
+      return '<div class="item"><b>'+esc(m.title)+'</b><span>'+esc(themeName(m.theme))+' · '+esc(m.author||'')+'</span><button class="btn" data-del-m="'+esc(m.id)+'">삭제</button></div>';
+    }).join('') || '<p class="hint">없어요.</p>';
+    $('tList').innerHTML = T.tools.map(function(t){
+      return '<div class="item"><b>'+esc(t.emoji)+' '+esc(t.name)+'</b><span>'+esc(t.use)+' · '+esc(t.summary)+'</span><button class="btn" data-del-t="'+esc(t.id)+'">삭제</button></div>';
+    }).join('') || '<p class="hint">없어요.</p>';
+    $('pList').innerHTML = P.map(function(p){
+      return '<div class="item"><b>'+esc(p.title)+'</b><span>'+esc(p.category)+' · '+esc(p.text)+'</span><button class="btn" data-del-p="'+esc(p.id)+'">삭제</button></div>';
+    }).join('') || '<p class="hint">없어요.</p>';
+  }
+  function done(msg){ toast(msg + ' · 1~2분 뒤 사이트에 반영돼요'); }
+  function busy(btn, on){ if (btn){ btn.disabled = on; btn.style.opacity = on ? .5 : 1; } }
+  function fail(btn){ return function(e){ busy(btn, false); toast(e.message, true); }; }
+
+  /* ---------- 표지 이미지: 1280x720 JPEG로 줄여서 올림 ---------- */
+  var coverB64 = null;
+  $('mCover').addEventListener('change', function(){
+    var f = this.files[0]; coverB64 = null; $('mPrev').hidden = true; if (!f) return;
+    var img = new Image(), u = URL.createObjectURL(f);
+    img.onload = function(){
+      var c = document.createElement('canvas'); c.width = 1280; c.height = 720;
+      var x = c.getContext('2d'), s = Math.max(1280 / img.width, 720 / img.height), w = img.width * s, h = img.height * s;
+      x.fillStyle = '#fff'; x.fillRect(0, 0, 1280, 720); x.drawImage(img, (1280 - w) / 2, (720 - h) / 2, w, h);
+      var d = c.toDataURL('image/jpeg', .85); coverB64 = d.split(',')[1]; $('mPrev').src = d; $('mPrev').hidden = false; URL.revokeObjectURL(u);
+    };
+    img.onerror = function(){ toast('이미지를 읽지 못했어요', true); };
+    img.src = u;
+  });
+
+  /* ---------- 자료 추가 / 삭제 ---------- */
+  $('fm').addEventListener('submit', function(e){
+    e.preventDefault(); var btn = e.submitter; busy(btn, true);
+    var title = $('mTitle').value.trim(), link = $('mLink').value.trim();
+    var id = slug(title); if (M.materials.some(function(m){ return m.id === id; })) id += '-' + Date.now().toString(36);
+    var d = new Date(), entry = {
+      id: id, title: title, subtitle: $('mSub').value.trim(), theme: $('mTheme').value,
+      tags: $('mTags').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean),
+      author: $('mAuthor').value.trim(), date: d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2),
+      link: link, external: true, tools: []
+    };
+    if (!entry.subtitle) delete entry.subtitle;
+    if ($('mNote').value.trim()) entry.note = $('mNote').value.trim();
+    var step = coverB64 ? ghPut('materials/' + id + '/cover.jpg', coverB64, '표지 추가: ' + title) : Promise.resolve();
+    if (coverB64) entry.cover = 'materials/' + id + '/cover.jpg';
+    step.then(function(){ return mutate('materials.json', function(data){ data.materials.push(entry); }, '자료 추가: ' + title); })
+      .then(function(data){ M = data; fill(); render(); e.target.reset(); $('mAuthor').value = '원종민'; $('mPrev').hidden = true; coverB64 = null; busy(btn, false); done('자료를 추가했어요'); })
+      .catch(fail(btn));
+  });
+
+  /* ---------- 도구 추가 / 삭제 ---------- */
+  $('ft').addEventListener('submit', function(e){
+    e.preventDefault(); var btn = e.submitter; busy(btn, true);
+    var name = $('tName').value.trim(), id = slug(name);
+    if (T.tools.some(function(t){ return t.id === id; })) id += '-' + Date.now().toString(36);
+    var tool = {id: id, name: name, emoji: $('tEmoji').value.trim() || '🔧', use: $('tUse').value, summary: $('tSum').value.trim(),
+      when: $('tWhen').value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean), level: $('tLevel').value, url: $('tUrl').value.trim(), note: $('tNote').value.trim()};
+    var links = [];
+    [].forEach.call($('tUsed').querySelectorAll('input[type=checkbox]:checked'), function(c){
+      var s = $('tUsed').querySelector('[data-slide="' + c.dataset.mid + '"]').value;
+      links.push({mid: c.dataset.mid, slide: parseInt(s, 10) || 1});
+    });
+    mutate('tools.json', function(data){ data.tools.push(tool); }, '도구 추가: ' + name)
+      .then(function(data){ T = data; if (!links.length) return null;
+        return mutate('materials.json', function(m){ links.forEach(function(l){ var mm = m.materials.filter(function(x){ return x.id === l.mid; })[0]; if (mm){ mm.tools = mm.tools || []; mm.tools.push({id: id, slide: l.slide}); } }); }, '도구 연결: ' + name); })
+      .then(function(data){ if (data) M = data; fill(); render(); e.target.reset(); $('tEmoji').value = '🔧'; busy(btn, false); done('도구를 추가했어요'); })
+      .catch(fail(btn));
+  });
+
+  /* ---------- 프롬프트 추가 ---------- */
+  $('fp').addEventListener('submit', function(e){
+    e.preventDefault(); var btn = e.submitter; busy(btn, true);
+    var title = $('pTitle').value.trim();
+    var item = {id: 'u' + Date.now().toString(36), title: title, category: $('pCat').value.trim(), group: $('pGroup').value.trim(), text: $('pText').value.trim()};
+    if ($('pSource').value){ item.source = $('pSource').value; item.slide = parseInt($('pSlide').value, 10) || 1; }
+    mutate('prompts.json', function(data){ data.push(item); }, '프롬프트 추가: ' + title)
+      .then(function(data){ P = data; fill(); render(); e.target.reset(); busy(btn, false); done('프롬프트를 추가했어요'); })
+      .catch(fail(btn));
+  });
+
+  /* ---------- 삭제 ---------- */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-del-m],[data-del-t],[data-del-p]'); if (!b) return;
+    var kind = b.hasAttribute('data-del-m') ? 'm' : b.hasAttribute('data-del-t') ? 't' : 'p';
+    var id = b.getAttribute('data-del-' + kind);
+    var label = b.parentNode.querySelector('b').textContent;
+    if (!confirm('"' + label + '"을(를) 삭제할까요?\n(사이트 목록에서 사라져요)')) return;
+    busy(b, true);
+    var job;
+    if (kind === 'm') job = mutate('materials.json', function(d){ d.materials = d.materials.filter(function(x){ return x.id !== id; }); }, '자료 삭제: ' + label).then(function(d){ M = d; });
+    else if (kind === 't') job = mutate('tools.json', function(d){ d.tools = d.tools.filter(function(x){ return x.id !== id; }); }, '도구 삭제: ' + label)
+      .then(function(d){ T = d; return mutate('materials.json', function(m){ m.materials.forEach(function(x){ x.tools = (x.tools || []).filter(function(u){ return u.id !== id; }); }); }, '도구 연결 정리: ' + label); }).then(function(d){ M = d; });
+    else job = mutate('prompts.json', function(d){ return d.splice(0, d.length, ...d.filter(function(x){ return x.id !== id; })); }, '프롬프트 삭제: ' + label).then(function(d){ P = d; });
+    job.then(function(){ fill(); render(); done('삭제했어요'); }).catch(function(e){ busy(b, false); toast(e.message, true); });
+  });
+
+  /* 저장된 토큰이 있으면 자동 연결 */
+  try { var saved = localStorage.getItem(KEY); if (saved) connect(saved); } catch (e) {}
+})();
+</script>
+</body></html>

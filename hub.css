@@ -122,3 +122,6 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .card .links a:hover{color:var(--c);border-color:var(--c)}
 
 .mnote{background:rgba(255,183,3,.16);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:600;line-height:1.5}
+
+.cover .ph{display:grid;place-items:center;width:100%;height:100%;padding:24px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--c),#232047)}
+.cover .ph b{font-size:26px;font-weight:900;letter-spacing:-.03em;line-height:1.2;word-break:keep-all}

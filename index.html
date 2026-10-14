@@ -32,7 +32,7 @@
   <p class="empty" id="empty" hidden>조건에 맞는 자료가 없어요.</p>
 </main>
 
-<footer class="foot wrap">© 2026 원종민 · AI 교실</footer>
+<footer class="foot wrap">© 2026 원종민 · AI 교실 · <a href="admin.html" style="opacity:.6">관리</a></footer>
 
 <script>
 (function(){
@@ -63,7 +63,7 @@
     $('grid').innerHTML = list.map(function(m){
       var th = themeOf(m.theme) || {name:'', color:'#1b2236'};
       return '<article class="card" style="--c:'+th.color+'">'+
-        '<a class="cover" href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'><img loading="lazy" src="'+esc(m.cover)+'" alt="'+esc(m.title)+' 표지" /></a>'+
+        '<a class="cover" href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'>'+(m.cover ? '<img loading="lazy" src="'+esc(m.cover)+'" alt="'+esc(m.title)+' 표지" />' : '<span class="ph"><b>'+esc(m.title)+'</b></span>')+'</a>'+
         '<div class="body"><span class="pill">'+esc(th.name)+'</span>'+
         '<h3><a href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'>'+esc(m.title)+'</a></h3>'+
         (m.subtitle ? '<p class="sub">'+esc(m.subtitle)+'</p>' : '')+
