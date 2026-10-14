@@ -146,6 +146,20 @@
       "external": true,
       "note": "제작: 권준구 · 안내 사이트와 실습 자료(zip) 제공, 강의안 메뉴는 연수 번호가 필요해요",
       "tools": []
+    },
+    {
+      "id": "mmv7q83lt",
+      "title": "선/점 대칭도형 앱",
+      "subtitle": "선/점 대칭도형",
+      "theme": "tools",
+      "tags": [
+        "수학 대칭"
+      ],
+      "author": "원종민",
+      "date": "2026-10",
+      "link": "https://symmetry-explorer-sand.vercel.app/",
+      "external": true,
+      "tools": []
     }
   ]
 }
