@@ -1,6 +1,11 @@
 # AI 교실 (원종민)
 
-테마별 강의자료 허브. 정적 사이트(GitHub Pages)이며 빌드 과정이 없습니다.
+테마별 강의자료 허브. 정적 사이트이며 빌드 과정이 없습니다.
+
+## 주소
+
+- Vercel(주 주소): https://ai-classroom-gamma.vercel.app — `main` push마다 자동 배포. 관리 페이지: /admin.html
+- GitHub Pages(보조): https://wonjongmin034-create.github.io/ai-classroom/ — 일부 네트워크(학교 등)에서 접속이 막힐 수 있음
 
 ## 구조
 
