@@ -160,6 +160,41 @@
       "link": "https://symmetry-explorer-sand.vercel.app/",
       "external": true,
       "tools": []
+    },
+    {
+      "id": "teacher-calendar",
+      "title": "학년 공유 캘린더",
+      "subtitle": "같은 공유 코드를 쓰는 선생님끼리 학년 일정을 함께 보는 캘린더",
+      "theme": "work",
+      "tags": [
+        "캘린더",
+        "학년 일정",
+        "공유"
+      ],
+      "author": "원종민",
+      "date": "2026-10",
+      "cover": "materials/teacher-calendar/cover.jpg",
+      "link": "https://teacher-calendar-azure.vercel.app",
+      "external": true,
+      "note": "공유 코드는 같은 학년 선생님끼리만 공유하세요",
+      "tools": []
+    },
+    {
+      "id": "dialect-finder",
+      "title": "방언조사앱",
+      "subtitle": "표준어를 치면 지역별 방언이, 방언을 치면 표준어가 나오는 우리말 방언 찾기",
+      "theme": "tools",
+      "tags": [
+        "방언",
+        "국어",
+        "우리말"
+      ],
+      "author": "원종민",
+      "date": "2026-10",
+      "cover": "materials/dialect-finder/cover.jpg",
+      "link": "https://dialect-finder.vercel.app",
+      "external": true,
+      "tools": []
     }
   ]
 }
