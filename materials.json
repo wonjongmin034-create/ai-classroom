@@ -195,6 +195,24 @@
       "link": "https://dialect-finder.vercel.app",
       "external": true,
       "tools": []
+    },
+    {
+      "id": "namhansanseong",
+      "title": "척화파 vs 주화파 관점 알기",
+      "subtitle": "남한산성 관점 신문 — 같은 사건을 다르게 전한 두 신문으로 5학년 국어 \"매체 자료의 관점\" 파악하기",
+      "theme": "tools",
+      "tags": [
+        "5학년 국어",
+        "관점",
+        "남한산성",
+        "매체 비교"
+      ],
+      "author": "원종민",
+      "date": "2026-10",
+      "cover": "materials/namhansanseong/cover.jpg",
+      "link": "https://namhansanseong-nu.vercel.app",
+      "external": true,
+      "tools": []
     }
   ]
 }
