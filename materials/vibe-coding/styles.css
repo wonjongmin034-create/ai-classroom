@@ -301,3 +301,17 @@ body.present .ui:hover{opacity:1}
 .pl-b.done{background:var(--success)}
 .pl-tx{white-space:pre-wrap;word-break:break-word;font-size:16px;line-height:1.7;color:var(--char)}
 @media print{.pdock{display:none!important}}
+
+/* 32쪽 실습 사진 카드 */
+.photo-dl{position:absolute;right:64px;bottom:60px;display:flex;align-items:center;gap:18px;width:560px;
+  background:#fff;border:1px solid var(--hair2);border-radius:26px;padding:12px 24px 12px 12px;text-decoration:none;color:var(--ink);
+  box-shadow:0 10px 30px rgba(27,34,54,.12);transition:transform .15s,box-shadow .15s,border-color .15s}
+.photo-dl:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 16px 38px rgba(255,107,74,.25)}
+.photo-dl img{width:112px;height:150px;object-fit:cover;border-radius:16px;flex:none;background:var(--paper)}
+.photo-dl .pd-tx{display:flex;flex-direction:column;gap:6px;min-width:0}
+.photo-dl b{font-size:26px;font-weight:900;letter-spacing:-.03em}
+.photo-dl em{font-style:normal;font-size:19px;line-height:1.45;color:var(--mute)}
+.photo-dl u{text-decoration:none;font-size:18px;font-weight:800;color:var(--brand);margin-top:4px}
+@media print{.photo-dl{box-shadow:none}.photo-dl u{display:none}}
+.photo-dl{bottom:46px;padding:10px 24px 10px 10px;width:540px}
+.photo-dl img{width:100px;height:132px}
