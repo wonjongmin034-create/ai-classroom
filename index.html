@@ -69,7 +69,7 @@
         (m.subtitle ? '<p class="sub">'+esc(m.subtitle)+'</p>' : '')+
         (m.note ? '<p class="mnote">'+esc(m.note)+'</p>' : '')+
         '<div class="tags">'+(m.tags||[]).map(function(x){ return '<span>#'+esc(x)+'</span>'; }).join('')+'</div>'+
-        '<div class="meta">'+(m.pages ? m.pages+'장 · ' : '')+esc(m.author||'')+' · '+esc(m.date||'')+'</div>'+
+        '<div class="meta">'+[m.pages ? m.pages+'장' : '', m.author ? esc(m.author) : '', m.date ? esc(m.date) : ''].filter(Boolean).join(' · ')+'</div>'+
         ((m.tools||[]).length||counts[m.id] ? '<div class="links"><a href="tools.html?m='+esc(m.id)+'">🧰 도구 '+((m.tools||[]).length)+'개</a><a href="prompts.html?m='+esc(m.id)+'">📋 프롬프트 '+(counts[m.id]||0)+'개</a></div>' : '')+
         '<div class="act"><a class="btn pri" href="'+esc(m.link)+'"'+(m.external?' target="_blank" rel="noopener"':'')+'>'+(m.external?'열기 ↗':'슬라이드 보기')+'</a>'+
         (m.pdf ? '<a class="btn" href="'+esc(m.pdf)+'" download>PDF ↓</a>' : '')+'</div></div></article>';

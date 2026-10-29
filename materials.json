@@ -213,6 +213,23 @@
       "link": "https://namhansanseong-nu.vercel.app",
       "external": true,
       "tools": []
+    },
+    {
+      "id": "prompt-master",
+      "title": "프롬프트 마스터",
+      "subtitle": "AI에게 말 잘 거는 법을 배워요 — 학교·학년·반을 입력하고 들어가는 프롬프트 연습 앱",
+      "theme": "tools",
+      "tags": [
+        "프롬프트",
+        "AI 활용",
+        "연습"
+      ],
+      "date": "2026-10",
+      "cover": "materials/prompt-master/cover.jpg",
+      "link": "https://prompt-master-silk.vercel.app",
+      "external": true,
+      "note": "학교·학년·반을 입력해야 들어갈 수 있어요",
+      "tools": []
     }
   ]
 }
