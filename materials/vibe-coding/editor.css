@@ -1,0 +1,31 @@
+/* 강의안 편집 모드 */
+body.editing{padding-top:64px}
+body.editing .pdock{display:none!important}
+body.editing .ui,body.editing .bar{display:none}
+body.editing .frame{cursor:text}
+.frame.ed-sel{outline:4px solid var(--brand);outline-offset:5px}
+body.editing .slide [contenteditable]{outline:none;caret-color:var(--brand)}
+body.editing .slide [contenteditable]:hover{outline:1.5px dashed rgba(255,107,74,.55);outline-offset:3px}
+body.editing .slide [contenteditable]:focus{outline:2px solid rgba(255,107,74,.8);outline-offset:3px}
+body.editing .slide img{cursor:pointer;outline:2px dashed rgba(17,81,255,.55);outline-offset:-2px}
+body.editing .slide a{pointer-events:auto;cursor:default}
+body.editing .slide .has-p{cursor:text}
+
+.edbar{position:fixed;left:0;right:0;top:0;z-index:90;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:10px 16px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair2);box-shadow:0 6px 20px rgba(27,34,54,.12);
+  font-family:var(--fu);color:var(--ink)}
+.edbar .ed-title{font-weight:900;font-size:15px;margin-right:4px}
+.edbar .ed-where{font-size:13px;color:var(--mute);font-weight:700;margin-right:6px}
+.edbar button{font-family:inherit;font-size:14px;font-weight:800;color:var(--ink);background:#fff;border:1.5px solid var(--hair);border-radius:999px;padding:8px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+.edbar button:hover{border-color:var(--ink)}
+.edbar .ed-danger{color:#d30005}
+.edbar .ed-state{margin-left:auto;font-size:13px;font-weight:800;color:var(--mute)}
+.edbar .ed-save{background:var(--brand);border-color:var(--brand);color:#fff}
+.edbar .ed-save:hover{background:var(--ink);border-color:var(--ink)}
+.edbar .ed-save:disabled{opacity:.6;cursor:wait}
+
+.ed-menu{position:fixed;top:60px;z-index:95;width:290px;background:#fff;border:1px solid var(--hair2);border-radius:20px;padding:12px;box-shadow:0 18px 44px rgba(27,34,54,.25);font-family:var(--fu)}
+.ed-menu p{font-size:12px;color:var(--mute);font-weight:700;margin:2px 4px 8px;line-height:1.5}
+.ed-menu button{display:block;width:100%;text-align:left;font-family:inherit;font-size:15px;font-weight:800;color:var(--ink);background:#fff;border:0;border-radius:12px;padding:10px 12px;cursor:pointer}
+.ed-menu button:hover{background:var(--paper)}
+@media (max-width:720px){.edbar .ed-title{display:none}}
