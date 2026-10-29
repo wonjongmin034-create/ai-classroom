@@ -42,7 +42,7 @@
         "PPT",
         "챗봇 GEMS"
       ],
-      "pages": 111,
+      "pages": 110,
       "author": "원종민",
       "date": "2026-10",
       "cover": "materials/vibe-coding/cover.jpg",
@@ -75,19 +75,19 @@
         },
         {
           "id": "google-slides",
-          "slide": 65
+          "slide": 64
         },
         {
           "id": "canvas",
-          "slide": 77
+          "slide": 76
         },
         {
           "id": "flow",
-          "slide": 94
+          "slide": 93
         },
         {
           "id": "gems",
-          "slide": 99
+          "slide": 98
         }
       ]
     },
