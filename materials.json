@@ -42,7 +42,7 @@
         "PPT",
         "챗봇 GEMS"
       ],
-      "pages": 110,
+      "pages": 111,
       "author": "원종민",
       "date": "2026-10",
       "cover": "materials/vibe-coding/cover.jpg",
@@ -51,43 +51,43 @@
       "tools": [
         {
           "id": "gemini",
-          "slide": 6
+          "slide": 7
         },
         {
           "id": "nano-banana",
-          "slide": 15
-        },
-        {
-          "id": "prompt-master",
           "slide": 16
         },
         {
+          "id": "prompt-master",
+          "slide": 17
+        },
+        {
           "id": "notebooklm",
-          "slide": 38
+          "slide": 39
         },
         {
           "id": "padlet-arcade",
-          "slide": 54
+          "slide": 55
         },
         {
           "id": "padlet",
-          "slide": 54
+          "slide": 55
         },
         {
           "id": "google-slides",
-          "slide": 64
+          "slide": 65
         },
         {
           "id": "canvas",
-          "slide": 76
+          "slide": 77
         },
         {
           "id": "flow",
-          "slide": 93
+          "slide": 94
         },
         {
           "id": "gems",
-          "slide": 98
+          "slide": 99
         }
       ]
     },

@@ -333,3 +333,9 @@ body.present .ui:hover{opacity:1}
 .file-dl b{font-size:24px}
 .file-dl em{font-size:18px;white-space:nowrap}
 .file-dl u{font-size:17px;margin-top:0}
+
+/* 3쪽 접속 안내: 큰 주소 */
+.bigurl{align-self:flex-start;display:inline-block;margin-top:30px;font-size:118px;font-weight:900;letter-spacing:-.04em;line-height:1.1;color:var(--ink);background:#fff;
+  border:4px solid var(--brand);border-radius:32px;padding:14px 44px 18px;text-decoration:none;box-shadow:0 16px 40px rgba(255,107,74,.25)}
+.bigurl:hover{background:#fff7f2}
+@media print{.bigurl{box-shadow:none}}
